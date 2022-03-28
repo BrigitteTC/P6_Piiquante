@@ -30,17 +30,17 @@ const app = express();
 //connexion a mongoDB
 
 const uri =
-  "mongodb+srv://BTCUser1:BTCUser1Passwd@cluster0.wupp6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  "mongodb+srv://BTCUser1:BTCUser1Passwd@cluster0.wupp6.mongodb.net/PiiquanteDB?retryWrites=true&w=majority";
 
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connexion à MongoDB réussie !"))
+  .then(() => console.log("Connexion à MongoDB Piiquante réussie !"))
 
   .catch((error) => {
-    console.error("error= " + error + "  Connexion à MongoDB échouée !");
+    console.error(
+      "error= " + error + "  Connexion à MongoDB Piiquante échouée !"
+    );
   });
-
-//Nouvelle version du middleware du 22 mars 2022
 
 // ajout du middleware général
 app.use((req, res, next) => {
