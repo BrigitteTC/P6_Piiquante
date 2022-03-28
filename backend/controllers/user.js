@@ -1,7 +1,7 @@
 /*
 ------------------------------------------
 user.js
-Date de création: 27/03/2022
+Date de création: 28/03/2022
 auteur BTC
 
 controleur pour les users
@@ -33,7 +33,12 @@ exports.signup = (req, res, next) => {
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
         .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => res.status(500).json({ error }));
+    //.catch((error) => res.status(500).json({ error }));
+    .catch((error) => {
+      res.status(500).json({ error });
+      console.log("email= " + req.body.email);
+      console.log("passwd= " + req.body.password);
+    });
 };
 
 // ft login pour connecter les utilisateurs.

@@ -23,6 +23,7 @@ const express = require("Express");
 const mongoose = require("mongoose");
 
 //routes
+const userRoutes = require("./routes/user");
 
 // application
 const app = express();
@@ -60,6 +61,10 @@ app.use((req, res, next) => {
 //Ajout use express.json pour capturer les objets json
 
 app.use(express.json());
+
+//app.use pour enregistrer les routes
+///api/auth = route attendue par le front end pour authentification
+app.use("/api/auth", userRoutes);
 
 //export de la fonction pour qu'on puisse y acceder depuis les autres fichiers du projet
 // dont le server node.
