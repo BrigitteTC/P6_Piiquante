@@ -19,8 +19,6 @@ const User = require("../models/User");
 //10 tours pour créer un passwd sécurisé
 
 exports.signup = (req, res, next) => {
-  console.log("email= " + req.body.email);
-  console.log("passwd= " + req.body.password);
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -31,11 +29,18 @@ exports.signup = (req, res, next) => {
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ error }));
+        //.catch((error) => res.status(400).json({ error }));
+        .catch((error) => {
+          res.status(400).json({ error });
+          console.log("error dans exports.signup save");
+          console.log("email= " + req.body.email);
+          console.log("passwd= " + req.body.password);
+        });
     })
     //.catch((error) => res.status(500).json({ error }));
     .catch((error) => {
       res.status(500).json({ error });
+      console.log("error dans exports.signup hash");
       console.log("email= " + req.body.email);
       console.log("passwd= " + req.body.password);
     });
@@ -62,7 +67,19 @@ exports.login = (req, res, next) => {
             token: "TOKEN",
           });
         })
-        .catch((error) => res.status(500).json({ error })); //500 = error serveur
+        //.catch((error) => res.status(500).json({ error })); //500 = error serveur
+        .catch((error) => {
+          res.status(500).json({ error });
+          console.log("error dans exports.login bcrypt");
+          console.log("email= " + req.body.email);
+          console.log("passwd= " + req.body.password);
+        });
     })
-    .catch((error) => res.status(500).json({ error })); //500 = error serveur
+    //.catch((error) => res.status(500).json({ error })); //500 = error serveur
+    .catch((error) => {
+      res.status(500).json({ error });
+      console.log("error dans exports.login User.findOne");
+      console.log("email= " + req.body.email);
+      console.log("passwd= " + req.body.password);
+    });
 };
