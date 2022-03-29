@@ -10,13 +10,14 @@ controleur pour les users
 
 //package de cryptage
 const bcrypt = require("bcrypt");
+
+//controle des token
+const jwt = require("jsonwebtoken");
 //modele users
 const User = require("../models/User");
 
 // ft signup pour enregistrement de nouveaux utilisateurs
-
-//hash du mot de passe
-//10 tours pour créer un passwd sécurisé
+// avec hash du mot de passe
 
 exports.signup = (req, res, next) => {
   bcrypt
@@ -29,22 +30,14 @@ exports.signup = (req, res, next) => {
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        //.catch((error) => res.status(400).json({ error }));
-        .catch((error) => {
-          res.status(400).json({ error });
-          console.log("error dans exports.signup save");
-          console.log("email= " + req.body.email);
-          console.log("passwd= " + req.body.password);
-        });
+        .catch((error) => res.status(401).json({ error }));
     })
-    //.catch((error) => res.status(500).json({ error }));
     .catch((error) => {
       res.status(500).json({ error });
-      console.log("error dans exports.signup hash");
-      console.log("email= " + req.body.email);
-      console.log("passwd= " + req.body.password);
     });
 };
+
+//----------------------------------------------------------------------------
 
 // ft login pour connecter les utilisateurs.
 exports.login = (req, res, next) => {
@@ -55,31 +48,28 @@ exports.login = (req, res, next) => {
       }
 
       //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
-      //Si correct renvoi du TOKEN au frontrnd
+      //Si correct renvoi du TOKEN au frontend
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({ error: "Mot de passe incorrect" });
+            return res.status(402).json({ error: "Mot de passe incorrect" });
           }
           res.status(200).json({
             userId: user._id,
-            token: "TOKEN",
+            //token signé avec clé secrete et qui expire dans 24h avec chaine alleatoire
+            /*token: "TOKEN",*/
+
+            token: jwt.sign(
+              {
+                userId: user._id,
+              },
+              "RANDOM_TOKEN_SECRET",
+              { expiresIn: "24h" }
+            ),
           });
         })
-        //.catch((error) => res.status(500).json({ error })); //500 = error serveur
-        .catch((error) => {
-          res.status(500).json({ error });
-          console.log("error dans exports.login bcrypt");
-          console.log("email= " + req.body.email);
-          console.log("passwd= " + req.body.password);
-        });
+        .catch((error) => res.status(501).json({ error })); //500 = error serveur
     })
-    //.catch((error) => res.status(500).json({ error })); //500 = error serveur
-    .catch((error) => {
-      res.status(500).json({ error });
-      console.log("error dans exports.login User.findOne");
-      console.log("email= " + req.body.email);
-      console.log("passwd= " + req.body.password);
-    });
+    .catch((error) => res.status(502).json({ error })); //500 = error serveur
 };
