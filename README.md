@@ -23,4 +23,8 @@ The app should reload automatically when you make a change to a file.
 Use `Ctrl+C` in the terminal to stop the local server.
 
 Lancer une invite de commande à partir du répertoire frontend contenant index.html
-lancer `npm run start`
+frontend:
+exécuter: `npm run start`
+
+backend:
+exécuter: `nodemon server`
