@@ -19,7 +19,7 @@ const mongoose = require("mongoose");
 
 //routes
 const userRoutes = require("./routes/user");
-const stuffRoutes = require("./routes/stuff");
+const sauceRoutes = require("./routes/sauce");
 
 // application
 const app = express();
@@ -61,7 +61,7 @@ app.use(express.json());
 //app.use pour enregistrer les routes
 
 //Route pour les sauces:
-app.use("/api/sauces", stuffRoutes);
+app.use("/api/sauces", sauceRoutes);
 
 ///api/auth = route attendue par le front end pour authentification
 app.use("/api/auth", userRoutes);

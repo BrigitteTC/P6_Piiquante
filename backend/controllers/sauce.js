@@ -1,7 +1,7 @@
 //Piiquante
 
 /*----------------------------------------
-controllers/stuff.js
+controllers/sauce.js
 creation: 30/03/2022
 auteur BTC
 
@@ -95,7 +95,7 @@ exports.deleteSauce = (req, res, next) => {
 
 //--------------------------------------------------------------
 //Extraction de tous les objets. GET
-exports.getAllStuff = (req, res, next) => {
+exports.getAllSauce = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
       res.status(200).json(sauces);
