@@ -63,6 +63,10 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 //app.use pour enregistrer les routes
+
+//Route pour les sauces:
+app.use("/api/sauces", stuffRoutes);
+
 ///api/auth = route attendue par le front end pour authentification
 app.use("/api/auth", userRoutes);
 
