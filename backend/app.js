@@ -1,29 +1,25 @@
+//Piiquante
+
 //----------------------------------------------------------------
 //app.js
 // date de création: 28/03/3033
 // auteur: BTC
 //
 // Appliction app.js pour placer l'applisation express
-/*
-
-express facilite le codage du server node.
-
-Mongoose est un package qui facilite les interactions avec la base de données MongoDB. 
-Il permet de :
-    valider le format des données ;
-    gérer les relations entre les documents ;
-    communiquer directement avec la base de données pour la lecture et l'écriture des documents.
-*/
+// se connecter à MongoDB
 //-------------------------------------------
 
 // import de express
+// express facilite le codage du server node.
 const express = require("Express");
 
 //mongoose
+// Mongoose est un package qui facilite les interactions avec la base de données MongoDB.
 const mongoose = require("mongoose");
 
 //routes
 const userRoutes = require("./routes/user");
+const stuffRoutes = require("./routes/stuff");
 
 // application
 const app = express();

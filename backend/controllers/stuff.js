@@ -55,7 +55,7 @@ exports.getOneSauce = (req, res, next) => {
 // 2 cas:
 //    1: L'utilisateur modifie les infos
 //    2: l'utilisateur modifie l'image = nouvelle image à traiter..
-exports.modifysauce = (req, res, next) => {
+exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file //Test si nouvelle image ou pas
     ? //1ier cas: nouvelle image on récupère son URL
       {
