@@ -1,3 +1,5 @@
+//Piiquante
+
 /*----------------------------------------
 middleware/auth.js
 Date de création: 29/03/2022
