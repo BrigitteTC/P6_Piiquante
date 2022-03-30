@@ -13,9 +13,14 @@ POST, PUT, GET et DELETE
 const Sauce = require("../models/Sauce");
 const fs = require("fs"); //acces à la gestion des fichiers de Node
 
-//-----------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------------
+Fonction: createSauce
 
-// Creation d'un objet = POST
+Objet: création d'une sauce
+
+verbe: POST
+
+-------------------------------------------------------------------------------*/
 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
@@ -32,9 +37,15 @@ exports.createSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-//--------------------------------------------------------------
+/*-----------------------------------------------------------------------------------
+Fonction: getOneSauce
 
-//Récupération 1 objet = GET
+Objet: récupération d'une seule sauce
+
+verbe: GET
+
+-------------------------------------------------------------------------------*/
+
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
     _id: req.params.id,
@@ -49,12 +60,16 @@ exports.getOneSauce = (req, res, next) => {
     });
 };
 
-//--------------------------------------------------------------
+/*-----------------------------------------------------------------------------------
+Fonction: modifySauce
 
-//Modification d'un objet = PUT
-// 2 cas:
-//    1: L'utilisateur modifie les infos
-//    2: l'utilisateur modifie l'image = nouvelle image à traiter..
+Objet: modification d'une sauce
+
+Modification d'un objet = PUT
+2 cas:
+    1: L'utilisateur modifie les infos
+    2: l'utilisateur modifie l'image = nouvelle image à traiter..
+-------------------------------------------------------------------------------*/
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file //Test si nouvelle image ou pas
     ? //1ier cas: nouvelle image on récupère son URL
@@ -74,12 +89,18 @@ exports.modifySauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-//--------------------------------------------------------------
-//Suppression d'un objet = DELETE
+/*-----------------------------------------------------------------------------------
+Fonction: deleteSauce
 
-//DELETE avec suppression du dossier image
-// on vérifie si il y a une image à supprimer du dossier image
-// et on la supprimer avec unlink
+Objet: suppression d'une sauce
+
+Suppression d'un objet = DELETE
+
+DELETE avec suppression du dossier image
+  on vérifie si il y a une image à supprimer du dossier image
+  et on la supprimer avec unlink
+-------------------------------------------------------------------------------*/
+
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -93,8 +114,14 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//--------------------------------------------------------------
-//Extraction de tous les objets. GET
+/*-----------------------------------------------------------------------------------
+Fonction: getAllSauce
+
+Objet: chargement de toutes les sauces
+
+verbe= GET
+------------------------------------------------------*/
+
 exports.getAllSauce = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
