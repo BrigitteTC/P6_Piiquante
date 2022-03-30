@@ -21,6 +21,9 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const sauceRoutes = require("./routes/sauce");
 
+// Acces au path du server
+const path = require("path");
+
 // application
 const app = express();
 
