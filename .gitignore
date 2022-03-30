@@ -1,3 +1,4 @@
+#suppression sauvegarde des fichiers de /node_modules sur github
 frontend/node_modules
 backend/node_modules
 #suppression sauvegarde des images sur github
