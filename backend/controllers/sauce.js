@@ -30,6 +30,8 @@ exports.createSauce = (req, res, next) => {
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`, // Url de l'image: protocole, nom du host: = server et Url de l'image
+    likes: 0,
+    dislikes: 0,
   });
   sauce
     .save()
@@ -69,6 +71,10 @@ Modification d'un objet = PUT
 2 cas:
     1: L'utilisateur modifie les infos
     2: l'utilisateur modifie l'image = nouvelle image à traiter..
+
+remarque:
+    L'opérateur spread ... est utilisé pour faire une copie 
+    de tous les éléments de req.body . 
 -------------------------------------------------------------------------------*/
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file //Test si nouvelle image ou pas
@@ -143,4 +149,17 @@ verbe: POST
 
 -------------------------------------------------------------------------------*/
 
-exports.createLike = (req, res, next) => {};
+exports.createLike = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      const like = sauce.like;
+      const disliked = sauce.disliked;
+
+      res.status(200).json({ message: "like " + like + " unlike " + disliked });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
+      });
+    });
+};
