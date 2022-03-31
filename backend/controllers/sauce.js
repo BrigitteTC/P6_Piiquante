@@ -24,7 +24,7 @@ verbe: POST
 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject._id; //on supprime l'ID du sauce enregistré
+  delete sauceObject._id; //on supprime l'ID de la sauce enregistrée
   const sauce = new Sauce({
     ...sauceObject,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -97,8 +97,8 @@ Objet: suppression d'une sauce
 Suppression d'un objet = DELETE
 
 DELETE avec suppression du dossier image
-  on vérifie si il y a une image à supprimer du dossier image
-  et on la supprimer avec unlink
+  vérifie si il y a une image à supprimer du dossier image
+  et la supprime avec unlink
 -------------------------------------------------------------------------------*/
 
 exports.deleteSauce = (req, res, next) => {
@@ -133,3 +133,14 @@ exports.getAllSauce = (req, res, next) => {
       });
     });
 };
+
+/*-----------------------------------------------------------------------------------
+Fonction: createLike
+
+Objet: gestion des like et dislike
+
+verbe: POST
+
+-------------------------------------------------------------------------------*/
+
+exports.createLike = (req, res, next) => {};

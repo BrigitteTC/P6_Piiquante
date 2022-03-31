@@ -25,5 +25,8 @@ router.get("/:id", auth, sauceCtrl.getOneSauce);
 
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
 
+//Route pour le like
+router.post("/:id/like", auth, sauceCtrl.createLike);
+
 //export du router
 module.exports = router;
