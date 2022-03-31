@@ -22,53 +22,49 @@ Objet: gestion des like et dislike
 verbe: POST
 
 -------------------------------------------------------------------------------*/
-/*
+
 exports.createLike = (req, res, next) => {
+  //const likeObject = JSON.parse(req.body);
+  const like = new Like({
+    ...req.body,
+  });
 
-    .then(() => {
-        const userId = req.body.userId;
-  const like = req.body.like
-      //const like = sauce.like;
-      //const disliked = sauce.disliked;
-      //const sauceObject = JSON.parse(req.body.sauce);
+  const id = like.id;
+  const likeNum = like.like;
 
-      res
-        .status(200)
-        .json({ message: "retour du like " + userID + " like" + Number(like) });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+  if (likeNum == 0) {
+    like
+      .save()
+      .then(() => res.status(201).json({ message: "like supprime !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
+
+  if (likeNum == 1) {
+    like
+      .save()
+      .then(() => res.status(201).json({ message: "like ajouté !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
+
+  if (likeNum === -1) {
+    like
+      .save()
+      .then(() => res.status(201).json({ message: "like ajouté !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
 };
+
+/*---------------------------------------------------------------------
+Test des requetes like
+exports.createLike = (req, res, next) => {
+  delete req.body._id;
+  const like = new Like({
+    ...req.body,
+  });
+  like
+    .save()
+    .then(() => res.status(201).json({ message: "like enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
+};
+
 */
-
-/*
-exports.createLike = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then((data) => {
-      const like = data.like;
-      //const disliked = sauce.disliked;
-      //const sauceObject = JSON.parse(req.body.sauce);
-
-      res.status(200).json({ message: "retour du like " + req.params.body });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
-};
-*/
-exports.createLike = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then((data) => {
-      res.status(200).json({ message: "retour du like " });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
-};
