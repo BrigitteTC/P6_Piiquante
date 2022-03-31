@@ -152,10 +152,11 @@ verbe: POST
 exports.createLike = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
-      const like = sauce.like;
-      const disliked = sauce.disliked;
+      //const like = sauce.like;
+      //const disliked = sauce.disliked;
+      //const sauceObject = JSON.parse(req.body.sauce);
 
-      res.status(200).json({ message: "like " + like + " unlike " + disliked });
+      res.status(200).json({ message: "retour du like " });
     })
     .catch((error) => {
       res.status(400).json({
