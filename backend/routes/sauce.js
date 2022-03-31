@@ -12,6 +12,8 @@ const express = require("express");
 const router = express.Router();
 
 const sauceCtrl = require("../controllers/sauce");
+const likeCtrl = require("../controllers/like");
+
 const auth = require("../middleware/auth");
 const multer = require("../middleware/multer-config");
 
@@ -26,7 +28,7 @@ router.get("/:id", auth, sauceCtrl.getOneSauce);
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
 
 //Route pour le like
-router.post("/:id/like", auth, sauceCtrl.createLike);
+router.post("/:id/like", auth, likeCtrl.createLike);
 
 //export du router
 module.exports = router;

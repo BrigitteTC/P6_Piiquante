@@ -11,6 +11,8 @@ POST, PUT, GET et DELETE
 */
 
 const Sauce = require("../models/Sauce");
+//const Like = require("../models/Like");
+
 const fs = require("fs"); //acces à la gestion des fichiers de Node
 
 /*-----------------------------------------------------------------------------------
@@ -132,31 +134,6 @@ exports.getAllSauce = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
       res.status(200).json(sauces);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
-};
-
-/*-----------------------------------------------------------------------------------
-Fonction: createLike
-
-Objet: gestion des like et dislike
-
-verbe: POST
-
--------------------------------------------------------------------------------*/
-
-exports.createLike = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then((sauce) => {
-      //const like = sauce.like;
-      //const disliked = sauce.disliked;
-      //const sauceObject = JSON.parse(req.body.sauce);
-
-      res.status(200).json({ message: "retour du like " });
     })
     .catch((error) => {
       res.status(400).json({

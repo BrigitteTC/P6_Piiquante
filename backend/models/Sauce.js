@@ -48,6 +48,6 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: ["String <userId>"] },
 });
 
-//export schema
+//export schemas
 
 module.exports = mongoose.model("Sauce", sauceSchema);
