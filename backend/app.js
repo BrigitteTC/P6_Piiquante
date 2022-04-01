@@ -27,10 +27,15 @@ const path = require("path");
 // application
 const app = express();
 
+//configure dotenv pou rles variables d'environnement
+require("dotenv").config();
+
 //connexion a mongoDB
 
-const uri =
-  "mongodb+srv://BTCUser1:BTCUser1Passwd@cluster0.wupp6.mongodb.net/PiiquanteDB?retryWrites=true&w=majority";
+const user = process.env.USER;
+const passwd = process.env.USER_PASSWD;
+const urlDB = process.env.URLDB;
+const uri = "mongodb+srv://" + user + ":" + passwd + "@" + urlDB;
 
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })

@@ -4,3 +4,6 @@ backend/node_modules
 #suppression sauvegarde des images sur github
 *.jpg
 *.png
+
+#fichier de variables d'environnements
+.env
