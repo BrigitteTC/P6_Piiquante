@@ -33,6 +33,17 @@ Algo:
 -----------------------------------------------------------------------*/
 function UpdatesauceLikeTab(userId, sauceId, likeValue) {
   try {
+    Sauce.findOne({
+      sauceId,
+    })
+      .then((sauce) => {
+        res.status(200).json(sauce);
+      })
+      .catch((error) => {
+        res.status(404).json({
+          error: error,
+        });
+      });
   } catch (e) {
     console.log("UpdateSauceLikeTab " + e);
   }
@@ -99,7 +110,11 @@ exports.createLike = (req, res, next) => {
   if (Number(likeNum) == 1) {
     like
       .save()
-      .then(() => res.status(201).json({ message: "like ajouté !" }))
+      .then(() => {
+        console.log("like");
+        res.status(201).json({ message: "like ajouté !" });
+      })
+
       .catch((error) => res.status(400).json({ error }));
   }
 
