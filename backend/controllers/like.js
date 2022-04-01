@@ -29,27 +29,29 @@ exports.createLike = (req, res, next) => {
     ...req.body,
   });
 
-  const id = like.id;
-  const likeNum = like.like;
+  const useId = like.id; //UserId qui a like la sauce
+  const likeNum = like.like; //compteur de like ou dislike
 
-  if (likeNum == 0) {
+  if (Number(likeNum) == 0) {
     like
       .save()
-      .then(() => res.status(201).json({ message: "like supprime !" }))
+      .then(() =>
+        res.status(201).json({ message: "like ou dislike supprime !" })
+      )
       .catch((error) => res.status(400).json({ error }));
   }
 
-  if (likeNum == 1) {
+  if (Number(likeNum) == 1) {
     like
       .save()
       .then(() => res.status(201).json({ message: "like ajouté !" }))
       .catch((error) => res.status(400).json({ error }));
   }
 
-  if (likeNum === -1) {
+  if (Number(likeNum) == -1) {
     like
       .save()
-      .then(() => res.status(201).json({ message: "like ajouté !" }))
+      .then(() => res.status(201).json({ message: "dislike ajouté !" }))
       .catch((error) => res.status(400).json({ error }));
   }
 };
