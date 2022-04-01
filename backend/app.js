@@ -27,7 +27,7 @@ const path = require("path");
 // application
 const app = express();
 
-//configure dotenv pou rles variables d'environnement
+//configure dotenv pour les variables d'environnement
 require("dotenv").config();
 
 //connexion a mongoDB
