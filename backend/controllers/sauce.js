@@ -141,3 +141,55 @@ exports.getAllSauce = (req, res, next) => {
       });
     });
 };
+
+/*-----------------------------------------------------------------------------------
+Fonction: createLike
+
+Objet: gestion des like et dislike
+
+verbe: POST
+
+Algo:
+  Acquisition de la requete like
+  Pour chaque like:
+    Récupération du userId
+    Modif de la sauce pour mise à jour params des like ou dislike
+
+-------------------------------------------------------------------------------*/
+
+exports.createLike = (req, res, next) => {
+  //const likeObject = JSON.parse(req.body);
+  const like = new Like({
+    ...req.body,
+  });
+
+  const userId = like.id; //UserId qui a like la sauce
+  const likeNum = like.like; //compteur de like ou dislike
+
+  if (Number(likeNum) == 0) {
+    like
+      .save()
+      .then(() =>
+        res.status(201).json({ message: "like ou dislike supprime !" })
+      )
+      .catch((error) => res.status(400).json({ error }));
+  }
+
+  if (Number(likeNum) == 1) {
+    like
+      .save()
+      .then(() => {
+        console.log("like");
+        res.status(201).json({ message: "like ajouté !" });
+      })
+
+      .catch((error) => res.status(400).json({ error }));
+  }
+
+  if (Number(likeNum) == -1) {
+    like
+      .save()
+      .then(() => res.status(201).json({ message: "dislike ajouté !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
+};
