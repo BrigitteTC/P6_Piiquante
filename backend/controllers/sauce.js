@@ -159,13 +159,11 @@ Algo:
 
 exports.createLike = (req, res, next) => {
   //const likeObject = JSON.parse(req.body);
-  const like = new Like({
-    ...req.body,
-  });
 
-  const userId = like.id; //UserId qui a like la sauce
-  const likeNum = like.like; //compteur de like ou dislike
-
+  const userId = req.params.id; //UserId qui a like la sauce
+  const likeNum = req.params.like; //compteur de like ou dislike
+  console.log(req.params.like);
+  console.log(req.params.id);
   if (Number(likeNum) == 0) {
     like
       .save()
