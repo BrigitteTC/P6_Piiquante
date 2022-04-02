@@ -160,10 +160,36 @@ Algo:
 exports.createLike = (req, res, next) => {
   //const likeObject = JSON.parse(req.body);
 
-  const userId = req.params.id; //UserId qui a like la sauce
-  const likeNum = req.params.like; //compteur de like ou dislike
+  const sauceId = req.params.id; //Id de la sauce
+  const likeNum = req.body.like; //compteur de like ou dislike
+  const userId = req.body.userId; //Id du user qui a like la sauce
+
   console.log(req.params.like);
   console.log(req.params.id);
+
+  console.log("req.body.like   = like = " + req.body.like);
+  console.log("req.body.userId  = userId xx=  " + req.body.userId);
+  console.log("req.params.id  = sauceId = " + req.params.id);
+  console.log("req.file  = file ??= " + req.file);
+
+  const sauceObject = req.file //Test si nouvelle image ou pas
+    ? //1ier cas: nouvelle image on récupère son URL
+      {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : //2ieme cas: pas de nouvelle image: copie du body
+      { ...req.body };
+  Sauce.updateOne({ _id: sauceId }, { ...sauceObject, _id: sauceId })
+    .then(() => res.status(200).json({ message: "Objet modifié !" }))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+//---------------------------------------------------------------------
+// essais
+/*
   if (Number(likeNum) == 0) {
     like
       .save()
@@ -191,3 +217,4 @@ exports.createLike = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 };
+*/
