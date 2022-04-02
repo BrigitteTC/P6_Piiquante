@@ -274,27 +274,47 @@ exports.createLike = (req, res, next) => {
   //cherche sauce par son id
   Sauce.findOne({ _id: sauceId })
     .then((sauce) => {
-      console.log("Updatesauce Entree ft :nombre de like = " + sauce.likes);
-      console.log(
-        "Updatesauce Entree ft :nombre de dislike = " + sauce.dislikes
-      );
+      console.log("debut :nombre de like = " + sauce.likes);
+      console.log("debut :nombre de dislike = " + sauce.dislikes);
       //boucle sur tableau des like
-      for (user in sauce.usersLiked) {
-        console.log("Updatesauce user" + user);
-        if (user == userId) {
-          userLikeFound = true;
+      //for (user in sauce.usersLiked) {
+
+      /*
+      if (sauce.usersLiked.length > 0) {
+        for (let i = 0; i < sauce.usersLiked.length; i++) {
+          console.log("Updatesauce user" + user);
+          if (sauce.usersLiked[i] == userId) {
+            userLikeFound = true;
+            console.log("user trouvé");
+          }
         }
+      }
+      */
+
+      let tabLikeIndex = sauce.usersLiked.indexOf(userId);
+      if (tabLikeIndex !== -1) {
+        userLikeFound = true;
       }
 
+      let tabDislikeIndex = sauce.usersDisliked.indexOf(userId);
+      if (tabDislikeIndex !== -1) {
+        userDisLikeFound = true;
+      }
+
+      console.log("1");
+      /*
       //boucle sur tableau des dislike
-      for (user in sauce.usersDisliked) {
+      for (let i = 0; i < sauce.usersDisliked.length; i++) {
         console.log("Updatesauce  " + user);
-        if (user == userId) {
+        if (sauce.usersDisliked[i] == userId) {
           userDisLikeFound = true;
+          console.log("user trouvé");
         }
       }
+      */
 
       if (likeValue == 1) {
+        console.log("ajout d'un like");
         if (!userLikeFound) {
           // on l'ajoute à la fin du tableau des like
           sauce.usersLiked.push(userId);
@@ -302,6 +322,8 @@ exports.createLike = (req, res, next) => {
         }
       }
       if (likeValue == -1) {
+        console.log("ajout d'un dislike");
+
         if (!userDisLikeFound) {
           // on l'ajoute à la fin du tableau des dislike
           sauce.usersDisliked.push(userId);
@@ -310,9 +332,10 @@ exports.createLike = (req, res, next) => {
       }
 
       if (likeValue == 0) {
+        console.log("suppression d'un like ou dislike");
         if (userDisLikeFound) {
           // on supprime le user du tableau
-
+          console.log("user trouvé");
           let tabIndex = sauce.usersDisliked.indexOf(userId);
           if (tabIndex !== -1) {
             sauce.usersDisliked.splice(tabIndex, 1);
@@ -322,6 +345,7 @@ exports.createLike = (req, res, next) => {
         }
 
         if (userLikeFound) {
+          console.log("user trouvé");
           // on supprime le user du tableau
           let tabIndex = sauce.usersLiked.indexOf(userId);
           if (tabIndex !== -1) {
