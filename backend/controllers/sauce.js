@@ -309,6 +309,28 @@ exports.createLike = (req, res, next) => {
         }
       }
 
+      if (likeValue == 0) {
+        if (userDisLikeFound) {
+          // on supprime le user du tableau
+
+          let tabIndex = sauce.usersDisliked.indexOf(userId);
+          if (tabIndex !== -1) {
+            sauce.usersDisliked.splice(tabIndex, 1);
+          }
+
+          sauce.dislikes -= 1;
+        }
+
+        if (userLikeFound) {
+          // on supprime le user du tableau
+          let tabIndex = sauce.usersLiked.indexOf(userId);
+          if (tabIndex !== -1) {
+            sauce.usersLiked.splice(tabIndex, 1);
+          }
+          sauce.likes -= 1;
+        }
+      }
+
       //DEBUG
 
       console.log(
