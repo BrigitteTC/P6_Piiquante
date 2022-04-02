@@ -142,6 +142,54 @@ exports.getAllSauce = (req, res, next) => {
     });
 };
 
+/*-----------------------------------------------------------------------
+function: UpdateSauceLikeTab
+
+Objet: Mise à jour 
+    du nombre de like et dislike 
+    et des tableaux des userId like
+    et dislike de la sauce
+
+Parametres:
+  entrée: 
+    userId: UserId du liker
+    sauceId: Id de la sauce
+    likeValue:  valeur du like: 
+      1  0 et -1
+
+Algo:
+-----------------------------------------------------------------------*/
+function UpdatesauceLikeTab(userId, sauceId, likeValue) {
+  try {
+    let userFound = false;
+
+    //cherche sauce par son id
+    Sauce.findOne({ _id: sauceId }).then((sauce) => {
+      //update like
+      console.log("nombre de like = " + sauce.likes);
+      console.log("nombre de dislike = " + sauce.dislikes);
+      //boucle sur tableau des like
+      for (user in sauce.usersLiked) {
+        console.log(user);
+        if (user == userId) {
+          userFound = true;
+        }
+      }
+
+      if (likeValue == 1) {
+        if (!userFound) {
+          // on l'ajoute à la fin du tableau
+          sauce.usersLiked.push(userId);
+          sauce.likes += 1;
+          console.log("nombre de like = " + sauce.likes);
+        }
+      }
+    });
+  } catch (e) {
+    console.log("UpdateSauceLikeTab " + e);
+  }
+}
+
 /*-----------------------------------------------------------------------------------
 Fonction: createLike
 
@@ -172,17 +220,14 @@ exports.createLike = (req, res, next) => {
   console.log("req.params.id  = sauceId = " + req.params.id);
   console.log("req.file  = file ??= " + req.file);
 
-  const sauceObject = req.file //Test si nouvelle image ou pas
-    ? //1ier cas: nouvelle image on récupère son URL
-      {
-        ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : //2ieme cas: pas de nouvelle image: copie du body
-      { ...req.body };
-  Sauce.updateOne({ _id: sauceId }, { ...sauceObject, _id: sauceId })
+  UpdatesauceLikeTab(userId, sauceId, likeNum);
+
+  Sauce.updateOne(
+    { _id: sauceId },
+    {
+      liked: likeNum,
+    }
+  )
     .then(() => res.status(200).json({ message: "Objet modifié !" }))
     .catch((error) => res.status(400).json({ error }));
 };
