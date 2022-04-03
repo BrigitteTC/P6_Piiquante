@@ -53,8 +53,11 @@ ft login
 
 Objet: pour connecter les utilisateurs.
 
-verbe: PUT
+verbe: POST
 
+Algo:
+  Vérif de l'utilisateur
+  Si utilisateur connu: verif du passwd avec la clé secréte
 
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {

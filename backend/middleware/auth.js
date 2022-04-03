@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
 
     // verif userId de la requete correspond à celui du token
     if (req.body.userId && req.body.userId !== userId) {
-      throw "Invalid user ID";
+      throw "403: unauthorized request";
     } else {
       // tout va bien on peut passer la requete on passe à la suite
       next();
