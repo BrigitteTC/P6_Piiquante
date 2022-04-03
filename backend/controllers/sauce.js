@@ -79,8 +79,12 @@ remarque:
     de tous les éléments de req.body . 
 -------------------------------------------------------------------------------*/
 exports.modifySauce = (req, res, next) => {
+  if (req.file) {
+    delFile(req.params.id); //On supprime l'ancien fichier de l'image
+  }
   const sauceObject = req.file //Test si nouvelle image ou pas
     ? //1ier cas: nouvelle image on récupère son URL
+
       {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -96,6 +100,30 @@ exports.modifySauce = (req, res, next) => {
     .then(() => res.status(200).json({ message: "Objet modifié !" }))
     .catch((error) => res.status(400).json({ error }));
 };
+
+/*------------------------------------------------------------
+Fonction: delFile
+
+Objet: Supprimer le fichier de l'image de la sauce
+
+Parametres: entrée: sauceId: Id de la sauce
+
+Algo:
+  Trouve la sauce
+  Calcule le chemin du fichier
+  Supprime le fichier de l'image
+---------------------------------------------------------*/
+
+function delFile(sauceId) {
+  try {
+    Sauce.findOne({ _id: sauceId })
+      .then((sauce) => {
+        const filename = sauce.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {});
+      })
+      .catch((error) => res.status(500).json({ error }));
+  } catch {}
+}
 
 /*-----------------------------------------------------------------------------------
 Fonction: deleteSauce
