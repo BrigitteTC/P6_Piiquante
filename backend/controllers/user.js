@@ -16,10 +16,20 @@ const jwt = require("jsonwebtoken");
 //modele users
 const User = require("../models/User");
 
-//--------------------------------------------------------------------------
-// ft signup pour enregistrement de nouveaux utilisateurs
-// avec hash du mot de passe
+//configure dotenv pour les variables d'environnement
+require("dotenv").config();
 
+/*--------------------------------------------------------------------------
+ ft signup :
+ 
+ Objet: pour enregistrement de nouveaux utilisateurs
+
+ verbe: POST
+
+ Algo: 
+   hash du mot de passe
+   Sauvegarde utilisateur crée
+------------------------------------------------------------*/
 exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
@@ -38,10 +48,17 @@ exports.signup = (req, res, next) => {
     });
 };
 
-//----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
+ft login 
 
-// ft login pour connecter les utilisateurs.
+Objet: pour connecter les utilisateurs.
+
+verbe: PUT
+
+
+----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
+  const secretKey = process.env.SECRET_KEY;
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
@@ -65,7 +82,7 @@ exports.login = (req, res, next) => {
               {
                 userId: user._id,
               },
-              "RANDOM_TOKEN_SECRET",
+              secretKey,
               { expiresIn: "24h" }
             ),
           });

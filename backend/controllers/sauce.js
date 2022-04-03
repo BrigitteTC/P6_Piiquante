@@ -11,7 +11,6 @@ POST, PUT, GET et DELETE
 */
 
 const Sauce = require("../models/Sauce");
-//const Like = require("../models/Like");
 
 const fs = require("fs"); //acces à la gestion des fichiers de Node
 
