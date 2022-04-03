@@ -268,107 +268,78 @@ exports.createLike = (req, res, next) => {
   const likeValue = req.body.like; //compteur de like ou dislike
   const userId = req.body.userId; //Id du user qui a like la sauce
 
-  let userLikeFound = false; //sera à true quand on aura trouvé un user dans le tableau des like
-  let userDisLikeFound = false; //sera à true quand on aura trouvé un user dans le tableau des dislike
-
   //cherche sauce par son id
   Sauce.findOne({ _id: sauceId })
     .then((sauce) => {
+      console.log("-------------------------------------------");
       console.log("debut :nombre de like = " + sauce.likes);
       console.log("debut :nombre de dislike = " + sauce.dislikes);
-      //boucle sur tableau des like
-      //for (user in sauce.usersLiked) {
 
-      /*
-      if (sauce.usersLiked.length > 0) {
-        for (let i = 0; i < sauce.usersLiked.length; i++) {
-          console.log("Updatesauce user" + user);
-          if (sauce.usersLiked[i] == userId) {
-            userLikeFound = true;
-            console.log("user trouvé");
-          }
-        }
-      }
-      */
-
+      //index sur tableau des likes et dislikes
       let tabLikeIndex = sauce.usersLiked.indexOf(userId);
-      if (tabLikeIndex !== -1) {
-        userLikeFound = true;
-      }
+      let tabDisLikeIndex = sauce.usersDisliked.indexOf(userId);
 
-      let tabDislikeIndex = sauce.usersDisliked.indexOf(userId);
-      if (tabDislikeIndex !== -1) {
-        userDisLikeFound = true;
-      }
+      //Traitement selon le like recu
+      switch (likeValue) {
+        case 1: //like
+          console.log("ajout d'un like");
 
-      console.log("1");
-      /*
-      //boucle sur tableau des dislike
-      for (let i = 0; i < sauce.usersDisliked.length; i++) {
-        console.log("Updatesauce  " + user);
-        if (sauce.usersDisliked[i] == userId) {
-          userDisLikeFound = true;
-          console.log("user trouvé");
-        }
-      }
-      */
+          if (tabLikeIndex === -1) {
+            // UserId absent du tableau on l'ajoute à la fin du tableau
+            sauce.usersLiked.push(userId);
+            sauce.likes += 1;
+          }
+          break;
 
-      if (likeValue == 1) {
-        console.log("ajout d'un like");
-        if (!userLikeFound) {
-          // on l'ajoute à la fin du tableau des like
-          sauce.usersLiked.push(userId);
-          sauce.likes += 1;
-        }
-      }
-      if (likeValue == -1) {
-        console.log("ajout d'un dislike");
+        case -1: //Dislike
+          console.log("ajout d'un dislike");
 
-        if (!userDisLikeFound) {
-          // on l'ajoute à la fin du tableau des dislike
-          sauce.usersDisliked.push(userId);
-          sauce.dislikes += 1;
-        }
-      }
+          if (tabDisLikeIndex === -1) {
+            // UserId absent du tableau on l'ajoute à la fin du tableau
+            sauce.usersDisliked.push(userId);
+            sauce.Dislikes += 1;
+          }
+          break;
 
-      if (likeValue == 0) {
-        console.log("suppression d'un like ou dislike");
-        if (userDisLikeFound) {
-          // on supprime le user du tableau
-          console.log("user trouvé");
-          let tabIndex = sauce.usersDisliked.indexOf(userId);
-          if (tabIndex !== -1) {
-            sauce.usersDisliked.splice(tabIndex, 1);
+        case 0: //annulatin du like précédent
+          console.log("suppression d'un like ou dislike");
+
+          if (tabLikeIndex !== -1) {
+            // on supprime le user du tableau et on dec le nb
+            console.log("user trouvé");
+
+            sauce.usersLiked.splice(tabLikeIndex, 1);
+
+            sauce.Likes -= 1;
           }
 
-          sauce.dislikes -= 1;
-        }
+          if (tabDisLikeIndex !== -1) {
+            console.log("user trouvé");
+            // on supprime le user du tableau et on dec le nb
 
-        if (userLikeFound) {
-          console.log("user trouvé");
-          // on supprime le user du tableau
-          let tabIndex = sauce.usersLiked.indexOf(userId);
-          if (tabIndex !== -1) {
-            sauce.usersLiked.splice(tabIndex, 1);
+            sauce.usersDisliked.splice(tabDisLikeIndex, 1);
+
+            sauce.Dislikes -= 1;
           }
-          sauce.likes -= 1;
-        }
+
+          break;
+
+        default: //autre pas d'action
       }
 
       //DEBUG
 
-      console.log(
-        "Updatesauce  Apres traitement:nombre de like = " + sauce.likes
-      );
+      console.log("Updatesauce  Apres traitement:nb de like = " + sauce.likes);
       console.log(
         "Updatesauce  Apres traitement:userId like = " + sauce.usersLiked[0]
       );
 
-      console.log("Updatesauce  Apres:nombre de dislike = " + sauce.dislikes);
+      console.log("Updatesauce  Apres:nb de dislike = " + sauce.dislikes);
       console.log(
         "Updatesauce  Apres:userId dislike = " + sauce.usersDisliked[0]
       );
 
+      //mise à jour de la sauce avec ses likes
       Sauce.updateOne({ _id: sauceId }, sauce)
 
         .then(() => res.status(200).json({ message: "like pris en compte" }))
