@@ -179,9 +179,20 @@ verbe: POST
 
 Algo:
   Acquisition de la requete like
-  Pour chaque like:
-    Récupération du userId
-    Modif de la sauce pour mise à jour params des like ou dislike
+  traitement selon valeur du like:
+
+  Cas like:
+    Ajout du like dans le tableau si le UserID n'existe pas déjà
+      et incrémente le compteur
+  Cas dislike
+        Ajout du like dans le tableau si le UserID n'existe pas déjà
+      et incrémente le compteur
+
+  cas 0: suppression d'un like ou dislike
+    REcherche le UserID dans les tableaux like et dislike
+    SUpprime l'elt si trouvé
+    décrémente le compteur correspondant
+
 
 -------------------------------------------------------------------------------*/
 
@@ -229,17 +240,15 @@ exports.createLike = (req, res, next) => {
           console.log("suppression d'un like ou dislike");
 
           if (tabLikeIndex !== -1) {
-            // on supprime le user du tableau et on dec le nb
+            // user trouvé on supprime le user du tableau et on dec le nb
             console.log("user trouvé");
 
             sauce.usersLiked.splice(tabLikeIndex, 1);
 
             sauce.Likes -= 1;
-          }
-
-          if (tabDisLikeIndex !== -1) {
+          } else if (tabDisLikeIndex !== -1) {
             console.log("user trouvé");
-            // on supprime le user du tableau et on dec le nb
+            // user trouvé  on supprime le user du tableau et on dec le nb
 
             sauce.usersDisliked.splice(tabDisLikeIndex, 1);
 
