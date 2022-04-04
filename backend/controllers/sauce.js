@@ -134,8 +134,10 @@ Suppression d'un objet = DELETE
 DELETE avec suppression du dossier image
   vérifie si il y a une image à supprimer du dossier image
   et la supprime avec unlink
--------------------------------------------------------------------------------*/
 
+  Vérifie le user avant de supprimer la sauce.
+-------------------------------------------------------------------------------*/
+/*
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -147,6 +149,33 @@ exports.deleteSauce = (req, res, next) => {
       });
     })
     .catch((error) => res.status(500).json({ error }));
+};
+*/
+
+exports.deleteSauce = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+    if (!sauce) {
+      res.status(404).json({
+        error: new Error("sauce non trouvée"),
+      });
+    }
+    if (sauce.userId !== req.auth.userId) {
+      res.status(403).json({
+        error: new Error("403: unauthorized request"),
+      });
+    }
+    Sauce.deleteOne({ _id: req.params.id })
+      .then(() => {
+        res.status(200).json({
+          message: "Deleted!",
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          error: error,
+        });
+      });
+  });
 };
 
 /*-----------------------------------------------------------------------------------
