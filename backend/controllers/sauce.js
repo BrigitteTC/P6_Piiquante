@@ -158,23 +158,27 @@ exports.deleteSauce = (req, res, next) => {
       res.status(404).json({
         error: new Error("sauce non trouvée"),
       });
-    }
-    if (sauce.userId !== req.auth.userId) {
+    } else if (sauce.userId !== req.auth.userId) {
       res.status(403).json({
         error: new Error("403: unauthorized request"),
       });
+    } else {
+      //Suppression de l'image dans le dossier image
+      delFile(req.params.id);
+
+      //suppression de la sauce dans la base de données.
+      Sauce.deleteOne({ _id: req.params.id })
+        .then(() => {
+          res.status(200).json({
+            message: "Deleted!",
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
     }
-    Sauce.deleteOne({ _id: req.params.id })
-      .then(() => {
-        res.status(200).json({
-          message: "Deleted!",
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          error: error,
-        });
-      });
   });
 };
 
