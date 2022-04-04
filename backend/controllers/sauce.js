@@ -231,27 +231,29 @@ exports.createLike = (req, res, next) => {
           if (tabDisLikeIndex === -1) {
             // UserId absent du tableau on l'ajoute à la fin du tableau
             sauce.usersDisliked.push(userId);
-            sauce.Dislikes += 1;
+            sauce.dislikes += 1;
           }
           break;
 
-        case 0: //annulatin du like précédent
+        case 0: //annulation du like précédent
           console.log("suppression d'un like ou dislike");
-
+          //Test tableau des like
           if (tabLikeIndex !== -1) {
             // user trouvé on supprime le user du tableau et on dec le nb
             console.log("user trouvé");
 
             sauce.usersLiked.splice(tabLikeIndex, 1);
 
-            sauce.Likes -= 1;
-          } else if (tabDisLikeIndex !== -1) {
+            sauce.likes -= 1;
+          }
+          // test tableau des dislike
+          else if (tabDisLikeIndex !== -1) {
             console.log("user trouvé");
             // user trouvé  on supprime le user du tableau et on dec le nb
 
             sauce.usersDisliked.splice(tabDisLikeIndex, 1);
 
-            sauce.Dislikes -= 1;
+            sauce.dislikes -= 1;
           }
 
           break;
