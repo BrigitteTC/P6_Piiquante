@@ -205,10 +205,6 @@ exports.createLike = (req, res, next) => {
   //cherche sauce par son id
   Sauce.findOne({ _id: sauceId })
     .then((sauce) => {
-      console.log("-------------------------------------------");
-      console.log("debut :nombre de like = " + sauce.likes);
-      console.log("debut :nombre de dislike = " + sauce.dislikes);
-
       //index sur tableau des likes et dislikes
       let tabLikeIndex = sauce.usersLiked.indexOf(userId);
       let tabDisLikeIndex = sauce.usersDisliked.indexOf(userId);
@@ -216,8 +212,6 @@ exports.createLike = (req, res, next) => {
       //Traitement selon le like recu
       switch (likeValue) {
         case 1: //like
-          console.log("ajout d'un like");
-
           if (tabLikeIndex === -1) {
             // UserId absent du tableau on l'ajoute à la fin du tableau
             sauce.usersLiked.push(userId);
@@ -226,8 +220,6 @@ exports.createLike = (req, res, next) => {
           break;
 
         case -1: //Dislike
-          console.log("ajout d'un dislike");
-
           if (tabDisLikeIndex === -1) {
             // UserId absent du tableau on l'ajoute à la fin du tableau
             sauce.usersDisliked.push(userId);
@@ -236,11 +228,9 @@ exports.createLike = (req, res, next) => {
           break;
 
         case 0: //annulation du like précédent
-          console.log("suppression d'un like ou dislike");
           //Test tableau des like
           if (tabLikeIndex !== -1) {
             // user trouvé on supprime le user du tableau et on dec le nb
-            console.log("user trouvé");
 
             sauce.usersLiked.splice(tabLikeIndex, 1);
 
@@ -248,7 +238,6 @@ exports.createLike = (req, res, next) => {
           }
           // test tableau des dislike
           else if (tabDisLikeIndex !== -1) {
-            console.log("user trouvé");
             // user trouvé  on supprime le user du tableau et on dec le nb
 
             sauce.usersDisliked.splice(tabDisLikeIndex, 1);
@@ -260,18 +249,6 @@ exports.createLike = (req, res, next) => {
 
         default: //autre pas d'action
       }
-
-      //DEBUG
-
-      console.log("Updatesauce  Apres traitement:nb de like = " + sauce.likes);
-      console.log(
-        "Updatesauce  Apres traitement:userId like = " + sauce.usersLiked[0]
-      );
-
-      console.log("Updatesauce  Apres:nb de dislike = " + sauce.dislikes);
-      console.log(
-        "Updatesauce  Apres:userId dislike = " + sauce.usersDisliked[0]
-      );
 
       //mise à jour de la sauce avec ses likes
       Sauce.updateOne({ _id: sauceId }, sauce)
