@@ -69,9 +69,19 @@ Fonction: modifySauce
 Objet: modification d'une sauce
 
 Modification d'un objet = PUT
-2 cas:
-    1: L'utilisateur modifie les infos
-    2: l'utilisateur modifie l'image = nouvelle image à traiter..
+
+Algo:
+  Vérification que l'utilisateur est authentifié en allent chercher le 
+  userID du propriétaire de la sauce avec findOne
+
+  Si l'utilisateur est auth
+
+    2 cas:
+      1: L'utilisateur modifie seulement les infos
+      2: l'utilisateur modifie l'image = nouvelle image à traiter..
+      on supprime l'ancienne image dans le dossier image
+  
+    Modification de l'obget par updateOne
 
 remarque:
     L'opérateur spread ... est utilisé pour faire une copie 
@@ -149,20 +159,6 @@ DELETE avec suppression du dossier image
 
   Vérifie le user avant de supprimer la sauce.
 -------------------------------------------------------------------------------*/
-/*
-exports.deleteSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then((sauce) => {
-      const filename = sauce.imageUrl.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        Sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: "Objet supprimé !" }))
-          .catch((error) => res.status(400).json({ error }));
-      });
-    })
-    .catch((error) => res.status(500).json({ error }));
-};
-*/
 
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id }).then((sauce) => {
